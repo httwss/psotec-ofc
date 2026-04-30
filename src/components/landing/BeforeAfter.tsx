@@ -1,5 +1,5 @@
 import beforeImg from "@/assets/before-skin.jpg";
-import afterImg from "@/assets/after-skin.jpg";
+import afterImg from "@/assets/after-skin-1.jpg";
 import { ArrowRight } from "lucide-react";
 
 const cases = [
