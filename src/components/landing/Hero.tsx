@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, MessageCircle, Shield, Star } from "lucide-react";
-import heroImage from "@/assets/psotec-hero.jpg";
+import heroImage from "@/assets/psotec-hero.png";
 import { whatsappLink, SITE_CONFIG } from "@/config/site";
 
 export const Hero = () => (
