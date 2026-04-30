@@ -1,5 +1,5 @@
 import { Leaf, ShieldCheck, FlaskConical, HeartPulse } from "lucide-react";
-import heroImage from "@/assets/psotec-hero.jpg";
+import heroImage from "@/assets/psotec-hero.png";
 
 const features = [
   { icon: Leaf, title: "Fórmula natural", desc: "Ativos botânicos selecionados para peles sensíveis." },
