@@ -1,7 +1,7 @@
 // Edite aqui as informações de contato e CTAs do site
 export const SITE_CONFIG = {
   brand: "Psotec",
-  whatsappNumber: "5511999999999", // Substitua pelo número real (formato internacional, sem +)
+  whatsappNumber: "5567981088211", // Substitua pelo número real (formato internacional, sem +)
   whatsappMessage: "Olá! Tenho interesse no Psotec e quero saber mais.",
   buyUrl: "#comprar", // Substitua pela URL do checkout
 };
