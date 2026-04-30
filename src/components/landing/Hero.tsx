@@ -26,7 +26,7 @@ export const Hero = () => (
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild variant="hero" size="xl" className="rounded-2xl">
-            <a href={SITE_CONFIG.buyUrl}>
+            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
               <ShoppingBag /> Comprar Agora
             </a>
           </Button>

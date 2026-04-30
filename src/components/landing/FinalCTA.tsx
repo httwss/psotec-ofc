@@ -30,7 +30,7 @@ export const FinalCTA = () => (
           </a>
         </Button>
         <Button asChild size="xl" variant="outline" className="rounded-2xl border-2 border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-          <a href={SITE_CONFIG.buyUrl}>
+          <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
             <ShoppingBag /> Comprar Agora
           </a>
         </Button>
