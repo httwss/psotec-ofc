@@ -1,5 +1,5 @@
 import { Leaf, ShieldCheck, FlaskConical, HeartPulse } from "lucide-react";
-import heroImage from "@/assets/psotec-hero.png";
+import aboutImage from "@/assets/psotec-about.jpeg";
 
 const features = [
   { icon: Leaf, title: "Fórmula natural", desc: "Ativos botânicos selecionados para peles sensíveis." },
@@ -14,7 +14,7 @@ export const About = () => (
       <div className="relative order-2 lg:order-1">
         <div className="absolute inset-0 gradient-health rounded-[3rem] blur-3xl opacity-20" />
         <img
-          src={heroImage}
+          src={aboutImage}
           alt="Pomada Psotec"
           loading="lazy"
           width={1280}
