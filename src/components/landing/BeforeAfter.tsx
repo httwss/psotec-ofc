@@ -1,11 +1,15 @@
-import beforeImg from "@/assets/before-skin.jpg";
-import afterImg from "@/assets/after-skin-1.jpg";
+import beforeCase1 from "@/assets/before-case-1.jpg";
+import afterCase1 from "@/assets/after-case-1.jpg";
+import beforeCase2 from "@/assets/before-case-2.jpg";
+import afterCase2 from "@/assets/after-case-2.jpg";
+import beforeCase3 from "@/assets/before-case-3.jpg";
+import afterCase3 from "@/assets/after-case-3.jpg";
 import { ArrowRight } from "lucide-react";
 
 const cases = [
-  { name: "Caso 1 — 30 dias de uso" },
-  { name: "Caso 2 — 45 dias de uso" },
-  { name: "Caso 3 — 60 dias de uso" },
+  { name: "Caso 1 — 30 dias de uso", before: beforeCase1, after: afterCase1 },
+  { name: "Caso 2 — 45 dias de uso", before: beforeCase2, after: afterCase2 },
+  { name: "Caso 3 — 60 dias de uso", before: beforeCase3, after: afterCase3 },
 ];
 
 export const BeforeAfter = () => (
@@ -33,7 +37,7 @@ export const BeforeAfter = () => (
             <div className="relative grid grid-cols-2">
               <div className="relative">
                 <img
-                  src={beforeImg}
+                  src={c.before}
                   alt="Pele antes do tratamento"
                   loading="lazy"
                   width={768}
@@ -46,7 +50,7 @@ export const BeforeAfter = () => (
               </div>
               <div className="relative">
                 <img
-                  src={afterImg}
+                  src={c.after}
                   alt="Pele depois do tratamento"
                   loading="lazy"
                   width={768}
