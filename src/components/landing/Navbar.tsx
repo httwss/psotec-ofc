@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { whatsappLink, SITE_CONFIG } from "@/config/site";
+import { Link } from "react-router-dom";
+import { SITE_CONFIG } from "@/config/site";
 import logo from "@/assets/psotec-logo.jpeg";
 
 export const Navbar = () => (
@@ -18,7 +19,7 @@ export const Navbar = () => (
         <a href="#sobre" className="text-sm font-medium text-muted-foreground transition-smooth hover:text-primary">Sobre</a>
       </nav>
       <Button asChild variant="whatsapp" size="sm" className="rounded-full">
-        <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">Comprar</a>
+        <Link to="/checkout">Comprar</Link>
       </Button>
     </div>
   </header>

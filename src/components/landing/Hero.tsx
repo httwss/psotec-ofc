@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { ShoppingBag, MessageCircle, Shield, Star } from "lucide-react";
 import heroImage from "@/assets/psotec-hero.png";
-import { whatsappLink, SITE_CONFIG } from "@/config/site";
+import { whatsappLink } from "@/config/site";
 
 export const Hero = () => (
   <section className="relative overflow-hidden gradient-hero">
@@ -26,9 +27,9 @@ export const Hero = () => (
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild variant="hero" size="xl" className="rounded-2xl">
-            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+            <Link to="/checkout">
               <ShoppingBag /> Comprar Agora
-            </a>
+            </Link>
           </Button>
           <Button asChild variant="whatsapp" size="xl" className="rounded-2xl animate-pulse-glow">
             <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
