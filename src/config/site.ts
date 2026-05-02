@@ -3,7 +3,7 @@ export const SITE_CONFIG = {
   brand: "Psotec",
   whatsappNumber: "5567981088211", // +55 67 98108-8211
   whatsappMessage: "Olá! Tenho interesse no Psotec e quero saber mais.",
-  buyUrl: "#comprar", // Substitua pela URL do checkout
+  buyUrl: "/checkout",
 };
 
 export const whatsappLink = () =>
