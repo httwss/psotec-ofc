@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { MessageCircle, ShoppingBag, CheckCircle2 } from "lucide-react";
 import { whatsappLink, SITE_CONFIG } from "@/config/site";
 
@@ -30,9 +31,9 @@ export const FinalCTA = () => (
           </a>
         </Button>
         <Button asChild size="xl" variant="outline" className="rounded-2xl border-2 border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-          <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+          <Link to="/checkout">
             <ShoppingBag /> Comprar Agora
-          </a>
+          </Link>
         </Button>
       </div>
 
