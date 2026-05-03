@@ -10,7 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/psotec-hero.png";
 
-const PRODUCT = { title: "Pomada Psotec", price: 0.01, quantity: 1 };
+const PRODUCT = { title: "Pomada Psotec", price: 0, quantity: 1 };
 const ORIGIN_CEP = "79830080"; // CEP de origem (remetente)
 
 type Shipping = { id: string; name: string; days: string; price: number };

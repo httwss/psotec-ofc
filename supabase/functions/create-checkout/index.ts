@@ -33,7 +33,7 @@ function isValid(p: Payload) {
   if (required.some((v) => !v || typeof v !== "string" || v.trim().length === 0)) return false;
   if (!/^\S+@\S+\.\S+$/.test(c.email)) return false;
   if (typeof p.shipping.price !== "number" || p.shipping.price < 0) return false;
-  if (typeof p.product.price !== "number" || p.product.price <= 0) return false;
+  if (typeof p.product.price !== "number" || p.product.price < 0) return false;
   return true;
 }
 
