@@ -129,11 +129,18 @@ Deno.serve(async (req) => {
       },
       external_reference: order.id,
       back_urls: {
-        success: `${req.headers.get("origin") ?? ""}/?status=success`,
-        failure: `${req.headers.get("origin") ?? ""}/?status=failure`,
-        pending: `${req.headers.get("origin") ?? ""}/?status=pending`,
+        success: `${req.headers.get("origin") ?? ""}/obrigado?order=${order.id}&status=success`,
+        failure: `${req.headers.get("origin") ?? ""}/obrigado?order=${order.id}&status=failure`,
+        pending: `${req.headers.get("origin") ?? ""}/obrigado?order=${order.id}&status=pending`,
       },
       auto_return: "approved",
+      payment_methods: {
+        excluded_payment_types: [],
+        excluded_payment_methods: [],
+        installments: 12,
+      },
+      notification_url: `${Deno.env.get("SUPABASE_URL")}/functions/v1/mp-webhook`,
+      statement_descriptor: "PSOTEC",
     };
 
     const mpRes = await fetch("https://api.mercadopago.com/checkout/preferences", {
