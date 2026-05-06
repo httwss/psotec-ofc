@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Clock, XCircle, Loader2, Home, MessageCircle } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, Loader2, Home, MessageCircle, Copy, FileText } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
 type Order = {
@@ -18,6 +18,10 @@ type Order = {
   state: string;
   created_at: string;
   paid_at: string | null;
+  payment_method: string | null;
+  pix_qr_code: string | null;
+  pix_qr_code_text: string | null;
+  boleto_url: string | null;
 };
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
