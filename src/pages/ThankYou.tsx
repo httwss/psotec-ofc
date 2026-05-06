@@ -153,8 +153,52 @@ export default function ThankYou() {
                   </div>
                 </div>
 
+                {order.payment_method === "pix" && order.status !== "approved" && order.pix_qr_code_text && (
+                  <div className="rounded-lg border border-border p-4">
+                    <h3 className="mb-3 font-semibold">Pague com PIX</h3>
+                    {order.pix_qr_code && (
+                      <img
+                        src={`data:image/png;base64,${order.pix_qr_code}`}
+                        alt="QR Code PIX"
+                        className="mx-auto mb-3 h-56 w-56 rounded-md border border-border bg-white p-2"
+                      />
+                    )}
+                    <div className="space-y-2">
+                      <p className="text-xs text-muted-foreground">Ou copie o código abaixo:</p>
+                      <div className="flex gap-2">
+                        <code className="flex-1 break-all rounded-md bg-muted p-2 text-xs">
+                          {order.pix_qr_code_text}
+                        </code>
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="outline"
+                          onClick={() => navigator.clipboard.writeText(order.pix_qr_code_text!)}
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {order.payment_method === "boleto" && order.boleto_url && order.status !== "approved" && (
+                  <div className="rounded-lg border border-border p-4">
+                    <h3 className="mb-3 font-semibold">Boleto bancário</h3>
+                    <Button asChild variant="outline" className="w-full rounded-xl">
+                      <a href={order.boleto_url} target="_blank" rel="noopener noreferrer">
+                        <FileText /> Visualizar / imprimir boleto
+                      </a>
+                    </Button>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      A confirmação pode levar até 2 dias úteis após o pagamento.
+                    </p>
+                  </div>
+                )}
+
                 <div className="space-y-2 text-sm">
                   <h3 className="font-semibold">Próximos passos</h3>
+
                   <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
                     {order.status === "approved" ? (
                       <>
