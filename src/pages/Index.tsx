@@ -7,7 +7,6 @@ import { About } from "@/components/landing/About";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { FloatingWhatsApp } from "@/components/landing/FloatingWhatsApp";
-import { FreeShippingPopup } from "@/components/landing/FreeShippingPopup";
 
 const Index = () => (
   <main className="min-h-screen bg-background">
@@ -20,7 +19,6 @@ const Index = () => (
     <FinalCTA />
     <Footer />
     <FloatingWhatsApp />
-    <FreeShippingPopup />
   </main>
 );
 
