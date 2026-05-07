@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import heroImage from "@/assets/psotec-hero.png";
 
-const PRODUCT = { title: "Pomada Psotec", price: 0.03 };
+const PRODUCT = { title: "Pomada Psotec", price: 169 };
 const FREE_SHIPPING_MIN_QTY = 3;
 const MP_PUBLIC_KEY = "APP_USR-f58b80f2-818a-4984-b880-e90e999238c7";
 
@@ -24,13 +24,13 @@ function calcShipping(destState: string): Shipping[] {
   const isSame = sameRegion.includes(destState.toUpperCase());
   if (isSame) {
     return [
-      { id: "PAC", name: "PAC", days: "5-8 dias úteis", price: 0.03 },
-      { id: "SEDEX", name: "SEDEX", days: "2-3 dias úteis", price: 0.03 },
+      { id: "PAC", name: "PAC", days: "5-8 dias úteis", price: 19.9 },
+      { id: "SEDEX", name: "SEDEX", days: "2-3 dias úteis", price: 32.5 },
     ];
   }
   return [
-    { id: "PAC", name: "PAC", days: "8-14 dias úteis", price: 0.03 },
-    { id: "SEDEX", name: "SEDEX", days: "3-5 dias úteis", price: 0.03 },
+    { id: "PAC", name: "PAC", days: "8-14 dias úteis", price: 29.9 },
+    { id: "SEDEX", name: "SEDEX", days: "3-5 dias úteis", price: 49.9 },
   ];
 }
 
