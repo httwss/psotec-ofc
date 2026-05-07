@@ -126,6 +126,21 @@ Deno.serve(async (req) => {
     const { error: updErr } = await supabase.from("orders").update(update).eq("id", order.id);
     if (updErr) console.error("Order update error", updErr);
 
+    // Fire-and-forget Telegram notification when already approved (e.g. credit card)
+    if (payment.status === "approved") {
+      try {
+        await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-order-telegram`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+          },
+          body: JSON.stringify({ order_id: order.id }),
+        });
+      } catch (e) {
+        console.error("telegram notify error", e);
+      }
+    }
     return new Response(
       JSON.stringify({
         order_id: order.id,
