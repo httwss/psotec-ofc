@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import heroImage from "@/assets/psotec-hero.png";
 
-const PRODUCT = { title: "Pomada Psotec", price: 0.01 };
+const PRODUCT = { title: "Pomada Psotec", price: 169.0 };
 const FREE_SHIPPING_MIN_QTY = 3;
 const MP_PUBLIC_KEY = "APP_USR-f58b80f2-818a-4984-b880-e90e999238c7";
 
