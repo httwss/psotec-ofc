@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SITE_CONFIG } from "@/config/site";
-
-const logo = "https://images.pexels.com/photos/3762879/pexels-photo-3762879.jpeg?auto=compress&cs=tinysrgb&w=200";
+import logo from "@/assets/psotec-logo.jpeg";
 
 export const Navbar = () => (
   <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-lg">

@@ -1,6 +1,5 @@
 import { SITE_CONFIG } from "@/config/site";
-
-const logo = "https://images.pexels.com/photos/3762879/pexels-photo-3762879.jpeg?auto=compress&cs=tinysrgb&w=200";
+import logo from "@/assets/psotec-logo.jpeg";
 
 export const Footer = () => (
   <footer className="border-t border-border bg-background py-10">

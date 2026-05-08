@@ -9,8 +9,7 @@ import { Loader2, ShoppingBag, ArrowLeft, Minus, Plus, Truck } from "lucide-reac
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
-
-const heroImage = "https://images.pexels.com/photos/3683074/pexels-photo-3683074.jpeg?auto=compress&cs=tinysrgb&w=200";
+import heroImage from "@/assets/psotec-hero.png";
 
 const PRODUCT = { title: "Pomada Psotec", price: 169 };
 const FREE_SHIPPING_MIN_QTY = 3;

@@ -1,6 +1,5 @@
 import { Leaf, ShieldCheck, FlaskConical, HeartPulse } from "lucide-react";
-
-const aboutImage = "https://images.pexels.com/photos/3762879/pexels-photo-3762879.jpeg?auto=compress&cs=tinysrgb&w=800";
+import aboutImage from "@/assets/psotec-about.jpeg";
 
 const features = [
   { icon: Leaf, title: "Fórmula natural", desc: "Ativos botânicos selecionados para peles sensíveis." },

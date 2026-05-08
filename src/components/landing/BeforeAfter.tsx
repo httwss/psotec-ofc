@@ -1,21 +1,15 @@
+import beforeCase1 from "@/assets/before-case-1.jpg";
+import afterCase1 from "@/assets/after-case-1.jpg";
+import beforeCase2 from "@/assets/before-case-2.jpg";
+import afterCase2 from "@/assets/after-case-2.jpg";
+import beforeCase3 from "@/assets/before-case-3.jpg";
+import afterCase3 from "@/assets/after-case-3.jpg";
 import { ArrowRight } from "lucide-react";
 
 const cases = [
-  {
-    name: "Caso 1 — 30 dias de uso",
-    before: "https://images.pexels.com/photos/3762453/pexels-photo-3762453.jpeg?auto=compress&cs=tinysrgb&w=400",
-    after: "https://images.pexels.com/photos/3762879/pexels-photo-3762879.jpeg?auto=compress&cs=tinysrgb&w=400",
-  },
-  {
-    name: "Caso 2 — 45 dias de uso",
-    before: "https://images.pexels.com/photos/3764119/pexels-photo-3764119.jpeg?auto=compress&cs=tinysrgb&w=400",
-    after: "https://images.pexels.com/photos/3765209/pexels-photo-3765209.jpeg?auto=compress&cs=tinysrgb&w=400",
-  },
-  {
-    name: "Caso 3 — 60 dias de uso",
-    before: "https://images.pexels.com/photos/3763152/pexels-photo-3763152.jpeg?auto=compress&cs=tinysrgb&w=400",
-    after: "https://images.pexels.com/photos/3762879/pexels-photo-3762879.jpeg?auto=compress&cs=tinysrgb&w=400",
-  },
+  { name: "Caso 1 — 30 dias de uso", before: beforeCase1, after: afterCase1 },
+  { name: "Caso 2 — 45 dias de uso", before: beforeCase2, after: afterCase2 },
+  { name: "Caso 3 — 60 dias de uso", before: beforeCase3, after: afterCase3 },
 ];
 
 export const BeforeAfter = () => (
