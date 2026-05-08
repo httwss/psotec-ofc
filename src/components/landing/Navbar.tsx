@@ -1,4 +1,5 @@
-import { MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { MessageCircle, ShoppingBag } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import { whatsappLink } from "@/config/site";
 import logo from "@/assets/psotec-logo.jpeg";
@@ -15,7 +16,7 @@ export const Navbar = () => (
 
       <nav className="hidden items-center gap-8 md:flex">
         {[
-          { href: "#beneficios", label: "Benefícios" },
+          { href: "#beneficios", label: "Beneficios" },
           { href: "#resultados", label: "Resultados" },
           { href: "#depoimentos", label: "Depoimentos" },
           { href: "#sobre", label: "Sobre" },
@@ -30,15 +31,24 @@ export const Navbar = () => (
         ))}
       </nav>
 
-      <a
-        href={whatsappLink()}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex h-9 items-center gap-2 rounded-full bg-whatsapp px-5 text-sm font-medium text-white shadow-sm transition-smooth hover:bg-whatsapp/90"
-      >
-        <MessageCircle className="h-4 w-4" />
-        <span className="hidden sm:inline">WhatsApp</span>
-      </a>
+      <div className="flex items-center gap-2">
+        <Link
+          to="/checkout"
+          className="inline-flex h-9 items-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-white shadow-sm transition-smooth hover:bg-primary/90"
+        >
+          <ShoppingBag className="h-4 w-4" />
+          <span className="hidden sm:inline">Comprar</span>
+        </Link>
+        <a
+          href={whatsappLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-9 items-center gap-2 rounded-full bg-whatsapp px-4 text-sm font-medium text-white shadow-sm transition-smooth hover:bg-whatsapp/90 sm:px-5"
+        >
+          <MessageCircle className="h-4 w-4" />
+          <span className="hidden sm:inline">WhatsApp</span>
+        </a>
+      </div>
     </div>
   </header>
 );

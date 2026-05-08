@@ -1,9 +1,10 @@
-import { MessageCircle, Truck, ShieldCheck, BadgeCheck } from "lucide-react";
+import { Link } from "react-router-dom";
+import { MessageCircle, ShoppingBag, Truck, ShieldCheck, BadgeCheck } from "lucide-react";
 import { whatsappLink } from "@/config/site";
 
 const trust = [
   { icon: Truck, label: "Entrega para todo o Brasil" },
-  { icon: ShieldCheck, label: "Garantia de satisfação" },
+  { icon: ShieldCheck, label: "Garantia de satisfacao" },
   { icon: BadgeCheck, label: "Pagamento seguro" },
 ];
 
@@ -20,15 +21,22 @@ export const FinalCTA = () => (
         Sua pele merece uma rotina de cuidado que funciona
       </h2>
       <p className="mx-auto mt-5 max-w-xl text-base leading-[1.8] text-muted-foreground">
-        Fale com nossa equipe pelo WhatsApp e saiba como o Psotec pode ajudar no cuidado da sua pele.
+        Comece o tratamento com Psotec e sinta a diferenca. Compre agora ou fale com nossa equipe pelo WhatsApp.
       </p>
 
-      <div className="mt-10">
+      <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <Link
+          to="/checkout"
+          className="inline-flex h-14 items-center gap-2.5 rounded-full bg-primary px-10 text-base font-medium text-white shadow-glow transition-smooth hover:bg-primary/90 hover:shadow-lg"
+        >
+          <ShoppingBag className="h-5 w-5" />
+          Comprar Agora
+        </Link>
         <a
           href={whatsappLink()}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-14 items-center gap-2.5 rounded-full bg-whatsapp px-10 text-base font-medium text-white shadow-cta transition-smooth hover:bg-whatsapp/90 hover:shadow-lg"
+          className="inline-flex h-14 items-center gap-2.5 rounded-full border border-whatsapp/30 bg-whatsapp/5 px-10 text-base font-medium text-whatsapp transition-smooth hover:bg-whatsapp hover:text-white"
         >
           <MessageCircle className="h-5 w-5" />
           Falar no WhatsApp

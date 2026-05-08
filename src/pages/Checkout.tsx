@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Loader2, ShoppingBag, ArrowLeft, Minus, Plus, Truck } from "lucide-react";
+import { Loader as Loader2, ShoppingBag, ArrowLeft, Minus, Plus, Truck, ShieldCheck, Lock } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
@@ -24,13 +24,13 @@ function calcShipping(destState: string): Shipping[] {
   const isSame = sameRegion.includes(destState.toUpperCase());
   if (isSame) {
     return [
-      { id: "PAC", name: "PAC", days: "5-8 dias úteis", price: 19.9 },
-      { id: "SEDEX", name: "SEDEX", days: "2-3 dias úteis", price: 32.5 },
+      { id: "PAC", name: "PAC", days: "5-8 dias uteis", price: 19.9 },
+      { id: "SEDEX", name: "SEDEX", days: "2-3 dias uteis", price: 32.5 },
     ];
   }
   return [
-    { id: "PAC", name: "PAC", days: "8-14 dias úteis", price: 29.9 },
-    { id: "SEDEX", name: "SEDEX", days: "3-5 dias úteis", price: 49.9 },
+    { id: "PAC", name: "PAC", days: "8-14 dias uteis", price: 29.9 },
+    { id: "SEDEX", name: "SEDEX", days: "3-5 dias uteis", price: 49.9 },
   ];
 }
 
@@ -79,7 +79,7 @@ export default function Checkout() {
         const data = await res.json();
         if (cancelled) return;
         if (data.erro) {
-          toast({ title: "CEP não encontrado", variant: "destructive" });
+          toast({ title: "CEP nao encontrado", variant: "destructive" });
           setShippingOptions([]); return;
         }
         setForm((f) => ({
@@ -112,13 +112,13 @@ export default function Checkout() {
       }
     }
     if (!/^\S+@\S+\.\S+$/.test(form.email)) {
-      toast({ title: "Email inválido", variant: "destructive" }); return false;
+      toast({ title: "Email invalido", variant: "destructive" }); return false;
     }
     if (onlyDigits(form.cep).length !== 8) {
-      toast({ title: "CEP inválido", variant: "destructive" }); return false;
+      toast({ title: "CEP invalido", variant: "destructive" }); return false;
     }
     if (!selectedShipping) {
-      toast({ title: "Selecione uma opção de frete", variant: "destructive" }); return false;
+      toast({ title: "Selecione uma opcao de frete", variant: "destructive" }); return false;
     }
     return true;
   };
@@ -138,16 +138,15 @@ export default function Checkout() {
             state: form.state.trim().toUpperCase(),
           },
           shipping: {
-            method: isFreeShipping ? `${selectedShipping.name} (Grátis)` : selectedShipping.name,
+            method: isFreeShipping ? `${selectedShipping.name} (Gratis)` : selectedShipping.name,
             price: isFreeShipping ? 0 : selectedShipping.price,
           },
           product: { ...PRODUCT, quantity },
         },
       });
       if (error) throw error;
-      if (!data?.order_id) throw new Error("Pedido não criado");
+      if (!data?.order_id) throw new Error("Pedido nao criado");
       setOrderId(data.order_id);
-      // Scroll to payment widget
       setTimeout(() => {
         document.getElementById("mp-payment-brick")?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
@@ -163,98 +162,114 @@ export default function Checkout() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container max-w-5xl px-4 py-8">
-        <Button variant="ghost" onClick={() => navigate("/")} className="mb-4">
-          <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
-        </Button>
-        <h1 className="mb-8 text-3xl font-extrabold tracking-tight md:text-4xl">
+    <div className="min-h-screen bg-white">
+      <div className="container max-w-5xl px-6 py-8">
+        <button
+          onClick={() => navigate("/")}
+          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-smooth hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" /> Voltar
+        </button>
+
+        <h1 className="font-display text-3xl leading-tight text-foreground md:text-4xl">
           Finalizar Compra
         </h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Preencha seus dados para concluir o pedido
+        </p>
 
-        <form onSubmit={handleContinueToPayment} className="grid gap-6 lg:grid-cols-[1fr_380px]">
+        <form onSubmit={handleContinueToPayment} className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
           <div className="space-y-6">
-            <Card>
-              <CardHeader><CardTitle>Seus dados</CardTitle></CardHeader>
+            {/* Customer info */}
+            <Card className="border-border/60 shadow-soft">
+              <CardHeader className="pb-4">
+                <CardTitle className="font-display text-lg">Seus dados</CardTitle>
+              </CardHeader>
               <CardContent className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <Label htmlFor="name">Nome completo *</Label>
-                  <Input id="name" value={form.name} onChange={(e) => set("name", e.target.value)} maxLength={120} required disabled={!!orderId} />
+                  <Label htmlFor="name" className="text-xs text-muted-foreground">Nome completo</Label>
+                  <Input id="name" value={form.name} onChange={(e) => set("name", e.target.value)} maxLength={120} required disabled={!!orderId} className="mt-1.5" />
                 </div>
                 <div>
-                  <Label htmlFor="email">Email *</Label>
-                  <Input id="email" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} maxLength={255} required disabled={!!orderId} />
+                  <Label htmlFor="email" className="text-xs text-muted-foreground">Email</Label>
+                  <Input id="email" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} maxLength={255} required disabled={!!orderId} className="mt-1.5" />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Telefone / WhatsApp *</Label>
-                  <Input id="phone" inputMode="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} maxLength={20} required disabled={!!orderId} />
+                  <Label htmlFor="phone" className="text-xs text-muted-foreground">Telefone / WhatsApp</Label>
+                  <Input id="phone" inputMode="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} maxLength={20} required disabled={!!orderId} className="mt-1.5" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader><CardTitle>Endereço de entrega</CardTitle></CardHeader>
+            {/* Address */}
+            <Card className="border-border/60 shadow-soft">
+              <CardHeader className="pb-4">
+                <CardTitle className="font-display text-lg">Endereco de entrega</CardTitle>
+              </CardHeader>
               <CardContent className="grid gap-4 sm:grid-cols-6">
                 <div className="sm:col-span-3">
-                  <Label htmlFor="cep">CEP *</Label>
-                  <div className="relative">
+                  <Label htmlFor="cep" className="text-xs text-muted-foreground">CEP</Label>
+                  <div className="relative mt-1.5">
                     <Input id="cep" value={form.cep} onChange={(e) => set("cep", formatCEP(e.target.value))} placeholder="00000-000" required disabled={!!orderId} />
                     {loadingCep && <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground" />}
                   </div>
                 </div>
                 <div className="sm:col-span-5">
-                  <Label htmlFor="street">Rua *</Label>
-                  <Input id="street" value={form.street} onChange={(e) => set("street", e.target.value)} required disabled={!!orderId} />
+                  <Label htmlFor="street" className="text-xs text-muted-foreground">Rua</Label>
+                  <Input id="street" value={form.street} onChange={(e) => set("street", e.target.value)} required disabled={!!orderId} className="mt-1.5" />
                 </div>
                 <div>
-                  <Label htmlFor="number">Nº *</Label>
-                  <Input id="number" value={form.number} onChange={(e) => set("number", e.target.value)} required disabled={!!orderId} />
+                  <Label htmlFor="number" className="text-xs text-muted-foreground">No.</Label>
+                  <Input id="number" value={form.number} onChange={(e) => set("number", e.target.value)} required disabled={!!orderId} className="mt-1.5" />
                 </div>
                 <div className="sm:col-span-3">
-                  <Label htmlFor="complement">Complemento</Label>
-                  <Input id="complement" value={form.complement} onChange={(e) => set("complement", e.target.value)} disabled={!!orderId} />
+                  <Label htmlFor="complement" className="text-xs text-muted-foreground">Complemento</Label>
+                  <Input id="complement" value={form.complement} onChange={(e) => set("complement", e.target.value)} disabled={!!orderId} className="mt-1.5" />
                 </div>
                 <div className="sm:col-span-3">
-                  <Label htmlFor="neighborhood">Bairro *</Label>
-                  <Input id="neighborhood" value={form.neighborhood} onChange={(e) => set("neighborhood", e.target.value)} required disabled={!!orderId} />
+                  <Label htmlFor="neighborhood" className="text-xs text-muted-foreground">Bairro</Label>
+                  <Input id="neighborhood" value={form.neighborhood} onChange={(e) => set("neighborhood", e.target.value)} required disabled={!!orderId} className="mt-1.5" />
                 </div>
                 <div className="sm:col-span-4">
-                  <Label htmlFor="city">Cidade *</Label>
-                  <Input id="city" value={form.city} onChange={(e) => set("city", e.target.value)} required disabled={!!orderId} />
+                  <Label htmlFor="city" className="text-xs text-muted-foreground">Cidade</Label>
+                  <Input id="city" value={form.city} onChange={(e) => set("city", e.target.value)} required disabled={!!orderId} className="mt-1.5" />
                 </div>
                 <div className="sm:col-span-2">
-                  <Label htmlFor="state">UF *</Label>
-                  <Input id="state" maxLength={2} value={form.state} onChange={(e) => set("state", e.target.value.toUpperCase())} required disabled={!!orderId} />
+                  <Label htmlFor="state" className="text-xs text-muted-foreground">UF</Label>
+                  <Input id="state" maxLength={2} value={form.state} onChange={(e) => set("state", e.target.value.toUpperCase())} required disabled={!!orderId} className="mt-1.5" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader><CardTitle>Frete</CardTitle></CardHeader>
+            {/* Shipping */}
+            <Card className="border-border/60 shadow-soft">
+              <CardHeader className="pb-4">
+                <CardTitle className="font-display text-lg">Frete</CardTitle>
+              </CardHeader>
               <CardContent className="space-y-3">
                 {isFreeShipping && (
-                  <div className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/10 p-3 text-sm font-semibold text-primary">
+                  <div className="flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 p-3 text-sm font-medium text-primary">
                     <Truck className="h-4 w-4" />
-                    Frete grátis aplicado! 🎉 (3+ unidades)
+                    Frete gratis aplicado (3+ unidades)
                   </div>
                 )}
                 {shippingOptions.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">Informe um CEP válido para calcular o frete.</p>
+                  <p className="text-sm text-muted-foreground">Informe um CEP valido para calcular o frete.</p>
                 ) : (
                   <RadioGroup value={shippingId} onValueChange={setShippingId} className="gap-3" disabled={!!orderId}>
                     {shippingOptions.map((s) => (
                       <label key={s.id} htmlFor={`ship-${s.id}`}
-                        className="flex cursor-pointer items-center justify-between rounded-lg border border-border p-4 transition-colors hover:bg-accent has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-accent">
+                        className="flex cursor-pointer items-center justify-between rounded-xl border border-border/60 p-4 transition-smooth hover:bg-accent/50 has-[[data-state=checked]]:border-primary/40 has-[[data-state=checked]]:bg-primary/5">
                         <div className="flex items-center gap-3">
                           <RadioGroupItem id={`ship-${s.id}`} value={s.id} />
                           <div>
-                            <div className="font-semibold">{s.name}</div>
-                            <div className="text-sm text-muted-foreground">{s.days}</div>
+                            <div className="text-sm font-semibold">{s.name}</div>
+                            <div className="text-xs text-muted-foreground">{s.days}</div>
                           </div>
                         </div>
-                        <div className="font-semibold">
+                        <div className="text-sm font-semibold">
                           {isFreeShipping ? (
-                            <span className="text-primary">Grátis</span>
+                            <span className="text-primary">Gratis</span>
                           ) : (
                             `R$ ${s.price.toFixed(2).replace(".", ",")}`
                           )}
@@ -266,10 +281,11 @@ export default function Checkout() {
               </CardContent>
             </Card>
 
+            {/* Payment */}
             {orderId && (
-              <Card id="mp-payment-brick">
-                <CardHeader>
-                  <CardTitle>Pagamento</CardTitle>
+              <Card id="mp-payment-brick" className="border-border/60 shadow-soft">
+                <CardHeader className="pb-4">
+                  <CardTitle className="font-display text-lg">Pagamento</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Payment
@@ -295,7 +311,7 @@ export default function Checkout() {
                         navigate(`/obrigado?order=${orderId}`);
                       } catch (err) {
                         toast({
-                          title: "Pagamento não autorizado",
+                          title: "Pagamento nao autorizado",
                           description: (err as Error).message,
                           variant: "destructive",
                         });
@@ -311,16 +327,19 @@ export default function Checkout() {
             )}
           </div>
 
+          {/* Sidebar */}
           <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
-            <Card>
-              <CardHeader><CardTitle>Resumo</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-3">
-                  <img src={heroImage} alt={PRODUCT.title} className="h-20 w-20 rounded-lg object-cover" />
+            <Card className="border-border/60 shadow-soft">
+              <CardHeader className="pb-4">
+                <CardTitle className="font-display text-lg">Resumo</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="flex gap-4">
+                  <img src={heroImage} alt={PRODUCT.title} className="h-20 w-20 rounded-xl object-cover" />
                   <div className="flex-1">
-                    <div className="font-semibold">{PRODUCT.title}</div>
-                    <div className="text-sm text-muted-foreground">R$ {PRODUCT.price.toFixed(2).replace(".", ",")} / un</div>
-                    <div className="mt-2 inline-flex items-center gap-2 rounded-md border border-border">
+                    <div className="text-sm font-semibold text-foreground">{PRODUCT.title}</div>
+                    <div className="text-xs text-muted-foreground">R$ {PRODUCT.price.toFixed(2).replace(".", ",")} / un</div>
+                    <div className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-border/60">
                       <Button type="button" variant="ghost" size="icon" className="h-8 w-8"
                         onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={!!orderId || quantity <= 1}>
                         <Minus className="h-3 w-3" />
@@ -335,17 +354,17 @@ export default function Checkout() {
                 </div>
 
                 {!isFreeShipping ? (
-                  <div className="rounded-lg border border-dashed border-primary/40 bg-primary/5 p-3 text-xs text-foreground">
-                    🚚 Adicione mais <strong>{FREE_SHIPPING_MIN_QTY - quantity}</strong>{" "}
-                    {FREE_SHIPPING_MIN_QTY - quantity === 1 ? "unidade" : "unidades"} e ganhe <strong>frete grátis</strong>!
+                  <div className="rounded-xl border border-dashed border-primary/30 bg-primary/5 p-3 text-xs text-foreground/80">
+                    Adicione mais <strong>{FREE_SHIPPING_MIN_QTY - quantity}</strong>{" "}
+                    {FREE_SHIPPING_MIN_QTY - quantity === 1 ? "unidade" : "unidades"} e ganhe <strong className="text-primary">frete gratis</strong>
                   </div>
                 ) : (
-                  <div className="rounded-lg border border-primary/40 bg-primary/10 p-3 text-xs font-semibold text-primary">
-                    🎉 Você ganhou frete grátis!
+                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 text-xs font-medium text-primary">
+                    Voce ganhou frete gratis
                   </div>
                 )}
 
-                <div className="space-y-2 border-t border-border pt-4 text-sm">
+                <div className="space-y-2 border-t border-border/60 pt-4 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Produto ({quantity}x)</span>
                     <span>R$ {productSubtotal.toFixed(2).replace(".", ",")}</span>
@@ -354,22 +373,26 @@ export default function Checkout() {
                     <span className="text-muted-foreground">Frete</span>
                     <span>
                       {isFreeShipping ? (
-                        <span className="font-semibold text-primary">Grátis</span>
+                        <span className="font-semibold text-primary">Gratis</span>
                       ) : selectedShipping ? (
                         `R$ ${selectedShipping.price.toFixed(2).replace(".", ",")}`
                       ) : (
-                        "—"
+                        "---"
                       )}
                     </span>
                   </div>
-                  <div className="flex justify-between border-t border-border pt-3 text-base font-bold">
+                  <div className="flex justify-between border-t border-border/60 pt-3 text-base font-semibold">
                     <span>Total</span>
                     <span>R$ {total.toFixed(2).replace(".", ",")}</span>
                   </div>
                 </div>
+
                 {!orderId ? (
-                  <Button type="submit" variant="hero" size="lg" className="w-full rounded-xl"
-                    disabled={creating || !selectedShipping}>
+                  <Button
+                    type="submit"
+                    className="w-full rounded-full bg-primary text-white hover:bg-primary/90"
+                    disabled={creating || !selectedShipping}
+                  >
                     {creating ? (<><Loader2 className="animate-spin" /> Processando...</>)
                       : (<><ShoppingBag /> Continuar para pagamento</>)}
                   </Button>
@@ -378,11 +401,24 @@ export default function Checkout() {
                     Escolha a forma de pagamento abaixo
                   </p>
                 )}
-                <p className="text-center text-xs text-muted-foreground">
+
+                <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+                  <Lock className="h-3 w-3" />
                   Pagamento seguro via Mercado Pago
-                </p>
+                </div>
               </CardContent>
             </Card>
+
+            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-primary/50" />
+                Compra segura
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Truck className="h-3.5 w-3.5 text-primary/50" />
+                Entrega nacional
+              </div>
+            </div>
           </aside>
         </form>
       </div>
