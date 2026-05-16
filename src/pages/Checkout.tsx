@@ -244,8 +244,8 @@ export default function Checkout() {
                         <div className="flex items-center gap-3">
                           <RadioGroupItem id={`ship-${s.id}`} value={s.id} />
                           <div>
-                            <div className="font-semibold">{s.name}</div>
-                            <div className="text-sm text-muted-foreground">{s.days}</div>
+                            <div className="font-semibold">{s.company ? `${s.company} — ${s.name}` : s.name}</div>
+                           <div className="text-sm text-muted-foreground">{s.days}</div>
                           </div>
                         </div>
                         <div className="font-semibold">
