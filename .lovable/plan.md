@@ -1,92 +1,53 @@
-## Revisão geral do Psotec
+## Plano
 
-Avaliei landing page, navegação, checkout e fluxo de pagamento. Abaixo o que sugiro ajustar, agrupado por prioridade.
+### 1. Banner promocional acima da Navbar
+- Copiar `WhatsApp_Image_2026-05-15_at_8.41.41_PM.jpeg` para `src/assets/promo-banner.jpg`.
+- Criar `src/components/landing/PromoBanner.tsx` — faixa full-width clicável (Link para `/checkout`), responsiva (cover, max-h em desktop, sem corte do conteúdo principal em mobile via `object-cover`/`object-position`).
+- Renderizar em `src/pages/Index.tsx` como **primeiro** filho, antes de `<Navbar />`.
 
----
+### 2. Preço unitário R$ 169 → R$ 119,97
+- `src/components/landing/Hero.tsx`: `PRODUCT_PRICE = 119.97`.
+- `src/pages/Checkout.tsx`: `PRODUCT.price = 119.97`.
+- Atualizar o texto de parcelamento:
+  - 1–2 un: "Em até 12x no cartão" (valor da parcela calculado em cima do total com juros do MP — não prometer "sem juros").
+  - 3+ un: destacar "**12x de R$ 29,99 sem juros**" (3 × 119,97 ≈ 359,88 ≈ 12 × 29,99). Isso aparece no Hero (badge), no FinalCTA, e no resumo do Checkout quando `quantity >= 3`.
+- Atualizar `index.html` (OG/desc) se o preço aparece em meta.
 
-### 🔴 Prioridade alta (consistência e credibilidade)
+### 3. Frete real via Melhor Envio (Sandbox=não, Produção)
+Substituir `calcShipping()` mockado por chamada à edge function.
 
-1. **Inconsistência de copy sobre composição**
-   - `Benefits`/`Hero` falam em "fórmula natural" e "ativos botânicos", mas `About` agora diz que contém corticoide.
-   - Risco de quebra de confiança e até problema regulatório.
-   - **Ação:** remover "fórmula natural" e "ativos botânicos selecionados" de `About.tsx` (feature "Fórmula natural") e padronizar em "Fórmula dermatológica com corticoide na dosagem ideal".
+**Secret necessário:** `MELHOR_ENVIO_TOKEN` (token de produção do Melhor Envio — pedirei via add_secret).
 
-2. **Promessas exageradas / risco ANVISA**
-   - Frases como "Chega de sofrer com psoríase", "elimina a descamação", "mudou minha vida" podem ser interpretadas como promessa de cura.
-   - **Ação:** suavizar para "alívio dos sintomas", "ajuda a controlar", "reduz" + reforçar disclaimer "*Resultados podem variar. Consulte um dermatologista.*" no rodapé e perto dos depoimentos.
+**Nova edge function** `supabase/functions/calc-shipping/index.ts`:
+- POST `{ cep_destino: string }`.
+- Valida CEP com Zod, normaliza só dígitos.
+- Constantes do produto (origem + dimensões):
+  - CEP origem: `79830-080`
+  - peso: `0.12` kg (por unidade) — multiplica por `quantity` recebido
+  - altura: `12`, largura: `7`, comprimento: `4.5` cm
+  - Aceita `quantity` no body (1–99) para escalar peso.
+- Chama `POST https://www.melhorenvio.com.br/api/v2/me/shipment/calculate`:
+  - Headers: `Authorization: Bearer ${MELHOR_ENVIO_TOKEN}`, `Accept: application/json`, `Content-Type: application/json`, `User-Agent: Psotec (contato@psotec)`.
+  - Body: `{ from: { postal_code }, to: { postal_code }, products: [{ id: "1", width, height, length, weight, insurance_value: total, quantity }] }`.
+- Filtra retornos com `error` e mapeia para `{ id, name, company, days, price }` (usa Correios PAC/SEDEX se presentes, senão todas as opções de transportadora).
+- CORS + validação + tratamento de erro (retorna mensagem amigável se token inválido).
 
-3. **Navbar — link "Comprar" usa estilo WhatsApp (verde)**
-   - Confunde: parece levar pro WhatsApp mas vai pro `/checkout`.
-   - **Ação:** trocar `variant="whatsapp"` por `variant="hero"` (ou primary) no botão da Navbar.
+**Frontend (`Checkout.tsx`):**
+- Trocar `calcShipping(uf)` pelo `supabase.functions.invoke("calc-shipping", { body: { cep_destino, quantity } })` dentro do `useEffect` do CEP.
+- Mostrar loader enquanto calcula, error toast se falhar.
+- Recalcular quando `quantity` mudar (adicionar `quantity` às deps).
+- Manter regra de frete grátis para 3+ unidades (zera o preço da opção escolhida, mas usa o nome real da transportadora).
+- UI já existente das opções continua funcionando (id/name/days/price).
 
-4. **PromoBadge sobreposto no checkout**
-   - O badge fixo "Leve 3 + Frete Grátis" aparece também na página `/checkout` (você está vendo agora) e cobre o botão "Voltar".
-   - **Ação:** renderizar `PromoBadge` apenas em `Index.tsx` (já está) — confirmar que não está no `App.tsx`. Caso esteja, remover. (Verifiquei: está só no Index, mas o `FloatingWhatsApp` também aparece — avaliar se ambos no mobile não poluem.)
+### 4. Verificação
+- Build automático.
+- Testar edge function com `curl_edge_functions` usando CEP real.
+- Conferir banner no preview (1067px).
 
----
+### Detalhes técnicos
+- Token Melhor Envio criado em https://melhorenvio.com.br/painel/gerenciar/tokens (escopo: `shipping-calculate`).
+- Endpoint público de cálculo não exige OAuth completo, só Bearer token.
+- Se a API exigir scope adicional, retornaremos erro claro pedindo regeração do token.
 
-### 🟡 Prioridade média (UX do checkout)
-
-5. **Indicador de progresso ausente**
-   - Usuário preenche formulário grande sem saber em que etapa está.
-   - **Ação:** adicionar stepper simples no topo: `Dados → Endereço → Pagamento`.
-
-6. **Quantidade escondida na sidebar**
-   - O seletor de quantidade está no card "Resumo" à direita, fácil de não notar no mobile.
-   - **Ação:** destacar com label "Quantidade" e mover o aviso de frete grátis para logo abaixo do produto, com barra de progresso (ex.: "2 de 3 para frete grátis").
-
-7. **Frete fixo / mockado**
-   - `calcShipping` usa valores hardcoded por região. Isso pode gerar prejuízo ou cobrança a maior.
-   - **Ação (futura):** integrar API real (Melhor Envio / Correios) ou pelo menos documentar que valores são estimativas.
-
-8. **Validação de telefone e CPF**
-   - Telefone aceita qualquer string; CPF não é coletado (Mercado Pago exige para boleto/PIX em alguns casos).
-   - **Ação:** máscara `(00) 00000-0000` + campo CPF opcional/obrigatório com validação.
-
-9. **Botão "Continuar para pagamento" não indica que abrirá o widget abaixo**
-   - **Ação:** após criar o pedido, desabilitar edição (já faz) + mostrar mensagem clara "✅ Pedido reservado. Escolha a forma de pagamento abaixo ↓".
-
----
-
-### 🟢 Prioridade baixa (design / polish)
-
-10. **Hero**
-    - Headline ótima, mas o badge "Fórmula dermatologicamente testada" + corticoide poderia virar selo de autoridade ("Contém corticoide na dosagem ideal — uso adulto").
-    - Considerar remover "+12 mil clientes satisfeitos" se o número não for real.
-
-11. **Seção Benefits**
-    - 4 cards iguais em fileira ficam monótonos no desktop. Sugestão: card do meio em destaque ou alternar tamanhos (bento).
-
-12. **BeforeAfter**
-    - Adicionar slider interativo de comparação (arrasta antes/depois) em vez de duas imagens lado a lado. Aumenta engajamento.
-
-13. **Testimonials**
-    - Adicionar selo "Compra verificada" + data. Considerar carrossel no mobile.
-
-14. **FinalCTA**
-    - Dois CTAs com peso visual igual competem. Definir um primário ("Comprar Agora") e o WhatsApp como secundário.
-
-15. **Footer**
-    - Falta: CNPJ, política de privacidade, política de troca/devolução, contato. Importante para credibilidade e para anúncios pagos (Meta/Google exigem).
-
-16. **SEO**
-    - `index.html` provavelmente tem `<title>` genérico. Definir: `Psotec — Pomada para alívio da psoríase | Compre online` (<60 chars) + meta description focada em benefício.
-    - Adicionar JSON-LD `Product` com preço e reviews.
-
-17. **Acessibilidade**
-    - Contraste do texto verde sobre fundo claro nos badges (`text-secondary`) pode estar abaixo de WCAG AA.
-    - Botões só com ícone (FloatingWhatsApp) precisam `aria-label`.
-
----
-
-### O que vou implementar (se aprovar)
-
-Por padrão, faria as **prioridade alta (1–4)** + **6, 9, 14 e 15** numa única passada — são mudanças de copy, ajustes pontuais no checkout e melhorias de credibilidade que dão o maior retorno sem reescrever seções inteiras.
-
-Os itens 5, 8, 11, 12 e 13 são features novas (stepper, máscara CPF, slider antes/depois, carrossel) — me diga se quer que eu inclua nesta rodada ou deixe para depois.
-
-### Pontos a confirmar
-
-- Posso suavizar as promessas de cura (item 2) ou prefere manter o tom atual?
-- O número "+12 mil clientes" é real?
-- Quer que eu já crie páginas de Política de Privacidade e Trocas (item 15) ou só links placeholder?
+### Pendente do usuário
+Após aprovação do plano, vou pedir o secret `MELHOR_ENVIO_TOKEN`.
