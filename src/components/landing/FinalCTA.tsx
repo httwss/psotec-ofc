@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { MessageCircle, ShoppingBag, CheckCircle2 } from "lucide-react";
+import { MessageCircle, ShoppingBag, CheckCircle2, CreditCard } from "lucide-react";
 import { whatsappLink, SITE_CONFIG } from "@/config/site";
 
 const guarantees = [

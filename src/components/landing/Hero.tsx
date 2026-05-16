@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ShoppingBag, MessageCircle, Shield, Star } from "lucide-react";
+import { ShoppingBag, MessageCircle, Shield, Star, CreditCard } from "lucide-react";
 import heroImage from "@/assets/psotec-hero.png";
 import { whatsappLink } from "@/config/site";
+
+const PRODUCT_PRICE = 169;
 
 export const Hero = () => (
   <section className="relative overflow-hidden gradient-hero">
