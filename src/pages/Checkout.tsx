@@ -134,7 +134,7 @@ export default function Checkout() {
             state: form.state.trim().toUpperCase(),
           },
           shipping: {
-            method: isFreeShipping ? `${selectedShipping.name} (Grátis)` : selectedShipping.name,
+            method: `${selectedShipping.company ? selectedShipping.company + " " : ""}${selectedShipping.name}${isFreeShipping ? " (Grátis)" : ""}`,
             price: isFreeShipping ? 0 : selectedShipping.price,
           },
           product: { ...PRODUCT, quantity },
