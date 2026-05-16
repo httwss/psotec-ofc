@@ -317,7 +317,9 @@ export default function Checkout() {
                     <div className="font-semibold">{PRODUCT.title}</div>
                     <div className="text-sm text-muted-foreground">R$ {PRODUCT.price.toFixed(2).replace(".", ",")} / un</div>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Em até 12x no cartão
+                      {quantity >= FREE_SHIPPING_MIN_QTY
+                        ? <span className="font-bold text-secondary-foreground">🔥 12x de R$ 29,99 sem juros</span>
+                        : "Em até 12x no cartão"}
                     </p>
                     <div className="mt-2 inline-flex items-center gap-2 rounded-md border border-border">
                       <Button type="button" variant="ghost" size="icon" className="h-8 w-8"
