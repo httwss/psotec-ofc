@@ -7,7 +7,7 @@ import { About } from "@/components/landing/About";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { FloatingWhatsApp } from "@/components/landing/FloatingWhatsApp";
-import { PromoBadge } from "@/components/landing/PromoBadge";
+
 import { PromoBanner } from "@/components/landing/PromoBanner";
 
 const Index = () => (
