@@ -4,7 +4,7 @@ import logo from "@/assets/psotec-logo.jpeg";
 export const Footer = () => (
   <footer className="border-t border-border bg-background py-12">
     <div className="container px-4">
-      <div className="grid gap-8 md:grid-cols-3">
+      <div className="grid gap-8 md:grid-cols-2">
         <div>
           <div className="flex items-center gap-2">
             <img src={logo} alt={`${SITE_CONFIG.brand} logo`} className="h-10 w-10 rounded-full object-cover" />
@@ -28,15 +28,6 @@ export const Footer = () => (
                 atendimentoaosclientes@gmail.com
               </a>
             </li>
-          </ul>
-        </div>
-
-        <div>
-          <p className="text-sm font-bold text-foreground">Informações</p>
-          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            <li><a href="#sobre" className="hover:text-primary transition-smooth">Sobre o produto</a></li>
-            <li><a href="/politica-privacidade" className="hover:text-primary transition-smooth">Política de privacidade</a></li>
-            <li><a href="/politica-trocas" className="hover:text-primary transition-smooth">Trocas e devoluções</a></li>
           </ul>
         </div>
       </div>
