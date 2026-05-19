@@ -32,7 +32,7 @@ export const About = () => (
           <span className="text-gradient-health">unidas pela sua pele</span>
         </h2>
         <p className="mt-5 text-lg text-muted-foreground">
-          O <strong className="text-foreground">Psotec</strong> é uma pomada dermatológica que combina corticoide na dosagem ideal com ativos hidratantes e calmantes. Atua no desconforto da psoríase, ajudando a aliviar coceira, vermelhidão e descamação.
+          O <strong className="text-foreground">Psotec</strong> é uma pomada dermatológica formulada com óleo de semente de uva e ativos hidratantes e calmantes. Atua no desconforto da psoríase, ajudando a aliviar coceira, vermelhidão e descamação.
         </p>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
